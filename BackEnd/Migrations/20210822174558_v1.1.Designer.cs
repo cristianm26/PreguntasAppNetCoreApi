@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BackEnd.Migrations
 {
     [DbContext(typeof(AplicationDbContext))]
-    [Migration("20210822153018_v1.1")]
+    [Migration("20210822174558_v1.1")]
     partial class v11
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -38,7 +38,7 @@ namespace BackEnd.Migrations
                     b.Property<DateTime>("FechaCreacion")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("NombreCuestionario")
+                    b.Property<string>("Nombre")
                         .IsRequired()
                         .HasColumnType("varchar(100)");
 
@@ -59,16 +59,16 @@ namespace BackEnd.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("CuestionarioId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Descripcion")
                         .IsRequired()
                         .HasColumnType("varchar(100)");
 
-                    b.Property<int>("cuestionarioId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("cuestionarioId");
+                    b.HasIndex("CuestionarioId");
 
                     b.ToTable("Pregunta");
                 });
@@ -119,45 +119,45 @@ namespace BackEnd.Migrations
 
             modelBuilder.Entity("BackEnd.Domain.Model.Cuestionario", b =>
                 {
-                    b.HasOne("BackEnd.Domain.Model.Usuario", "usuario")
+                    b.HasOne("BackEnd.Domain.Model.Usuario", "Usuario")
                         .WithMany()
                         .HasForeignKey("UsuarioId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("usuario");
+                    b.Navigation("Usuario");
                 });
 
             modelBuilder.Entity("BackEnd.Domain.Model.Pregunta", b =>
                 {
-                    b.HasOne("BackEnd.Domain.Model.Cuestionario", "cuestionario")
-                        .WithMany("Pregunta")
-                        .HasForeignKey("cuestionarioId")
+                    b.HasOne("BackEnd.Domain.Model.Cuestionario", "Cuestionario")
+                        .WithMany("listPreguntas")
+                        .HasForeignKey("CuestionarioId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("cuestionario");
+                    b.Navigation("Cuestionario");
                 });
 
             modelBuilder.Entity("BackEnd.Domain.Model.Respuesta", b =>
                 {
-                    b.HasOne("BackEnd.Domain.Model.Pregunta", "pregunta")
-                        .WithMany("Respuesta")
+                    b.HasOne("BackEnd.Domain.Model.Pregunta", "Pregunta")
+                        .WithMany("listRespuestas")
                         .HasForeignKey("PreguntaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("pregunta");
+                    b.Navigation("Pregunta");
                 });
 
             modelBuilder.Entity("BackEnd.Domain.Model.Cuestionario", b =>
                 {
-                    b.Navigation("Pregunta");
+                    b.Navigation("listPreguntas");
                 });
 
             modelBuilder.Entity("BackEnd.Domain.Model.Pregunta", b =>
                 {
-                    b.Navigation("Respuesta");
+                    b.Navigation("listRespuestas");
                 });
 #pragma warning restore 612, 618
         }

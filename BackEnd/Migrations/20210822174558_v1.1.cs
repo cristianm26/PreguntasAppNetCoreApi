@@ -13,7 +13,7 @@ namespace BackEnd.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    NombreCuestionario = table.Column<string>(type: "varchar(100)", nullable: false),
+                    Nombre = table.Column<string>(type: "varchar(100)", nullable: false),
                     Descripcion = table.Column<string>(type: "varchar(150)", nullable: false),
                     FechaCreacion = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Activo = table.Column<int>(type: "int", nullable: false),
@@ -37,14 +37,14 @@ namespace BackEnd.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Descripcion = table.Column<string>(type: "varchar(100)", nullable: false),
-                    cuestionarioId = table.Column<int>(type: "int", nullable: false)
+                    CuestionarioId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Pregunta", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Pregunta_Cuestionario_cuestionarioId",
-                        column: x => x.cuestionarioId,
+                        name: "FK_Pregunta_Cuestionario_CuestionarioId",
+                        column: x => x.CuestionarioId,
                         principalTable: "Cuestionario",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -77,9 +77,9 @@ namespace BackEnd.Migrations
                 column: "UsuarioId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Pregunta_cuestionarioId",
+                name: "IX_Pregunta_CuestionarioId",
                 table: "Pregunta",
-                column: "cuestionarioId");
+                column: "CuestionarioId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Respuesta_PreguntaId",
