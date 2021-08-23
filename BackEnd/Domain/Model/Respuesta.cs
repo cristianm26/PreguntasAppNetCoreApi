@@ -9,17 +9,17 @@ namespace BackEnd.Domain.Model
 {
     public class Respuesta
     {
-        public int Id { get; set; }
+        public int Id  { get; set; }
 
         [Required]
-        [Column(TypeName = "varchar(50)")]
-        public string Descripcion { get; set; }
+        [Column(TypeName  = "varchar(50)")]
+        public string  Descripcion { get; set; }
 
         [Required]
-        public bool EsCorrecta { get; set; }
+        public bool  EsCorrecta { get; set; }
 
-        public int PreguntaId { get; set; }
-        public Pregunta Pregunta { get; set; }
+        public int  PreguntaId { get; set; }
+        public Pregunta  Pregunta { get; set; }
 
     }
 }

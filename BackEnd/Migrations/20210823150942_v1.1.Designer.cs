@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BackEnd.Migrations
 {
     [DbContext(typeof(AplicationDbContext))]
-    [Migration("20210822174558_v1.1")]
+    [Migration("20210823150942_v1.1")]
     partial class v11
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -97,6 +97,55 @@ namespace BackEnd.Migrations
                     b.ToTable("Respuesta");
                 });
 
+            modelBuilder.Entity("BackEnd.Domain.Model.RespuestaCuestionario", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("Activo")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CuestionarioId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Fecha")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("NombreParticipante")
+                        .IsRequired()
+                        .HasColumnType("varchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CuestionarioId");
+
+                    b.ToTable("RespuestaCuestionario");
+                });
+
+            modelBuilder.Entity("BackEnd.Domain.Model.RespuestaCuestionarioDetalle", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("RespuestaCuestionarioId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RespuestaId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RespuestaCuestionarioId");
+
+                    b.HasIndex("RespuestaId");
+
+                    b.ToTable("RespuestaCuestionarioDetalle");
+                });
+
             modelBuilder.Entity("BackEnd.Domain.Model.Usuario", b =>
                 {
                     b.Property<int>("Id")
@@ -150,6 +199,36 @@ namespace BackEnd.Migrations
                     b.Navigation("Pregunta");
                 });
 
+            modelBuilder.Entity("BackEnd.Domain.Model.RespuestaCuestionario", b =>
+                {
+                    b.HasOne("BackEnd.Domain.Model.Cuestionario", "Cuestionario")
+                        .WithMany()
+                        .HasForeignKey("CuestionarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Cuestionario");
+                });
+
+            modelBuilder.Entity("BackEnd.Domain.Model.RespuestaCuestionarioDetalle", b =>
+                {
+                    b.HasOne("BackEnd.Domain.Model.RespuestaCuestionario", "RespuestaCuestionario")
+                        .WithMany("ListRtaCuestionarioDetalle")
+                        .HasForeignKey("RespuestaCuestionarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BackEnd.Domain.Model.Respuesta", "Respuesta")
+                        .WithMany()
+                        .HasForeignKey("RespuestaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Respuesta");
+
+                    b.Navigation("RespuestaCuestionario");
+                });
+
             modelBuilder.Entity("BackEnd.Domain.Model.Cuestionario", b =>
                 {
                     b.Navigation("listPreguntas");
@@ -158,6 +237,11 @@ namespace BackEnd.Migrations
             modelBuilder.Entity("BackEnd.Domain.Model.Pregunta", b =>
                 {
                     b.Navigation("listRespuestas");
+                });
+
+            modelBuilder.Entity("BackEnd.Domain.Model.RespuestaCuestionario", b =>
+                {
+                    b.Navigation("ListRtaCuestionarioDetalle");
                 });
 #pragma warning restore 612, 618
         }
