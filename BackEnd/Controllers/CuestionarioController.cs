@@ -75,7 +75,6 @@ namespace BackEnd.Controllers
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
-               
             }
         }
 
